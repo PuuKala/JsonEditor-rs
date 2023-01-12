@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Some string",
+    "value": "helasdad"
+  },
+  {
+    "name": "Some int",
+    "value": 135
+  }
+]
