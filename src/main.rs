@@ -5,7 +5,6 @@ const MESSAGE_ROWS: i32 = 2;
 fn main() {
     let args: Vec<String> = std::env::args().collect();
 
-    // Checking arguments
     if args.len() != 2 {
         println!("Incorrect amount of parameters! Give only json filename!");
         return;
@@ -24,7 +23,8 @@ fn main() {
     ez_curses.print(&args[1]);
     ez_curses.print(". Press F1 to quit.");
 
-    // Currently only accepting JSON arrays
+    // Only accepting JSON arrays for now. Change this if you want to broaden the use to your own use case.
+    // NOTE: This doesn't check whether the array itself has the correct formatting!
     if !parsed_json.is_array() {
         ez_curses.move_rc(5, 5);
         ez_curses.print("CURRENTLY ONLY SUPPORTING A SIMPLE ARRAY JSON!");
@@ -72,13 +72,14 @@ fn main() {
         }
         row += 1;
     }
+    // JSON reading major portion end
 
     row = MESSAGE_ROWS;
     let mut col: i32 = VALUE_AREA + value_vec[0].len() as i32;
     ez_curses.move_rc(row, col);
 
     //|--------------------------------------------------------------------------------------------
-    //| MAJOR_PORTION: Reading inputs into the vector                                             |
+    //| MAJOR_PORTION: Reading user inputs into the vector                                        |
     //|--------------------------------------------------------------------------------------------
     while let Some(input) = ez_curses.get_input() {
         let mut running = true;
@@ -166,6 +167,7 @@ fn main() {
         }
         ez_curses.move_rc(row, col);
     }
+    // User input major portion end
 
     //|--------------------------------------------------------------------------------------------
     //| MAJOR_PORTION: Parsing new values and writing new JSON                                    |
@@ -180,6 +182,7 @@ fn main() {
                 json::JsonValue::from(value_vec[json_array_index].parse::<i32>().unwrap());
         }
     }
+    // Parsing values for JSON major portion end
 
     // TODO: Warn the user if write failed
     std::fs::write(&args[1], parsed_json.pretty(2));
