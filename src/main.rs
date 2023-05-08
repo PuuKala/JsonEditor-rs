@@ -100,7 +100,7 @@ fn main() {
                 }
                 '\u{1b}' => {
                     // Arrow keys, F1
-                    // NOTE: Needs refactoring!
+                    // NOTE: Needs refactoring! This could be ex. in its own function for clarity
                     // NOTE: If break is used in match, it breaks from the while loop eventually
                     // NOTE: Aka. it cannot be used in here
                     if let easycurses::Input::Character(char) = ez_curses.get_input().unwrap() {
@@ -185,5 +185,5 @@ fn main() {
     // Parsing values for JSON major portion end
 
     // TODO: Warn the user if write failed
-    std::fs::write(&args[1], parsed_json.pretty(2));
+    std::fs::write(&args[1], parsed_json.pretty(2)).unwrap();
 }
